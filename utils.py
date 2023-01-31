@@ -54,7 +54,7 @@ def load_from_embeddings(embedding_path):
     return vec
 
 
-def create_image_grid(label_images):
+def create_image_grid(label_images, label_number):
 
     for i in range(len(label_images)):
         if i >= 9:
@@ -62,5 +62,6 @@ def create_image_grid(label_images):
         image = label_images[i]
         plt.subplot(3, 3, i+1)
         plt.imshow(image, cmap='gray',interpolation='none')
+        plt.title(f'Class: {label_number}')
         plt.axis('off')
     plt.show()
