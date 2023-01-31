@@ -3,6 +3,9 @@ import os
 from PIL import Image
 import torch
 import matplotlib.pyplot as plt
+from pathlib import Path
+
+
 
 def read_images_from_directory(image_directory: str) -> list:
     """
@@ -54,7 +57,7 @@ def load_from_embeddings(embedding_path):
     return vec
 
 
-def create_image_grid(label_images, label_number):
+def create_image_grid(label_images, project_name, label_number):
 
     for i in range(len(label_images)):
         if i >= 9:
@@ -64,4 +67,12 @@ def create_image_grid(label_images, label_number):
         plt.imshow(image, cmap='gray',interpolation='none')
         plt.title(f'Class: {label_number}')
         plt.axis('off')
-    plt.show()
+        plt.savefig(f'./clusters/{project_name}/cluster_{label_number}.png')
+
+
+def create_dir(directory_path):
+    if not Path(directory_path).is_dir():
+        Path(directory_path).mkdir(exist_ok=True)
+        print(f"Directory is created {Path(directory_path).stem}")
+
+    return Path(directory_path).stem
