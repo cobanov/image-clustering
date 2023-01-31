@@ -13,7 +13,7 @@ def read_images_from_directory(image_directory: str) -> list:
     """
 
     list_of_images = list()
-    for ext in ("*.gif", "*.png", "*.jpg"):
+    for ext in ("*.gif", "*.png", "*.jpg", '*.jpeg'):
         list_of_images.extend(
             glob.glob(os.path.join(image_directory, ext))
         )  # ? Remove sorted if it is there
