@@ -3,8 +3,8 @@ from scipy.cluster.vq import kmeans2
 import numpy as np
 
 
-def calculate_pca(embeddings):
-    pca = PCA(n_components=8)
+def calculate_pca(embeddings, dim=8):
+    pca = PCA(n_components=dim)
     pca_embeddings = pca.fit_transform(embeddings.squeeze())
     return pca_embeddings
 
