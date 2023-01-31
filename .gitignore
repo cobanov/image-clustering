@@ -161,7 +161,7 @@ cython_debug/
 
 
 data/
-dataset/
+datasets/
 *.ipynb
 repl.py
 *.pt
