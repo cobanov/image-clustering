@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 
-
 def read_images_from_directory(image_directory: str) -> list:
     """
     > It takes a directory as input and returns a list of all the images in that directory
@@ -16,7 +15,7 @@ def read_images_from_directory(image_directory: str) -> list:
     """
 
     list_of_images = list()
-    for ext in ("*.gif", "*.png", "*.jpg", '*.jpeg'):
+    for ext in ("*.gif", "*.png", "*.jpg", "*.jpeg"):
         list_of_images.extend(
             glob.glob(os.path.join(image_directory, ext))
         )  # ? Remove sorted if it is there
@@ -63,16 +62,14 @@ def create_image_grid(label_images, project_name, label_number):
         if i >= 9:
             break
         image = label_images[i]
-        plt.subplot(3, 3, i+1)
-        plt.imshow(image, cmap='gray',interpolation='none')
-        plt.title(f'Class: {label_number}')
-        plt.axis('off')
-        plt.savefig(f'./clusters/{project_name}/cluster_{label_number}.png')
+        plt.subplot(3, 3, i + 1)
+        plt.imshow(image, cmap="gray", interpolation="none")
+        plt.title(f"Class: {label_number}")
+        plt.axis("off")
+        plt.savefig(f"./clusters/{project_name}/cluster_{label_number}.png")
 
 
 def create_dir(directory_path):
     if not Path(directory_path).is_dir():
         Path(directory_path).mkdir(exist_ok=True)
-        print(f"Directory is created {Path(directory_path).stem}")
-
     return Path(directory_path).stem

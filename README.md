@@ -20,22 +20,21 @@ pip install -r requirements.txt
 ## Usage
 
 ```bash
-usage: inference.py [-h] [-i INPUT] [-b BATCH] [-p PATHS] [-g GPU_ID]        
+usage: main.py [-h] [-i INPUT] [-c CLUSTER] [-p PCA]
 
 Image caption CLI
 
 optional arguments:
-  -h, --help                      show this help message and exit
-  -i INPUT,  --input INPUT        Input directoryt path, such as ./images
-  -b BATCH,  --batch BATCH        Batch size
-  -p PATHS,  --paths PATHS        A any.txt files contains all image paths.
-  -g GPU_ID, --gpu-id GPU_ID      gpu device to use (default=0) can be 0,1,2 for multi-gpu
+  -h, --help                        show this help message and exit
+  -i INPUT, --input INPUT           Input directoryt path, such as ./images
+  -c CLUSTER, --cluster CLUSTER     How many cluster will be
+  -p PCA, --pca PCA                 PCA Dimensions
 ```
 
 ### Example
 
 ```bash
-python main.py -i /path/images/folder --batch 8 --gpu 0 
+python main.py -i "D:\New folder\random_1500" -c 50 -p 16 
 ```
 
 ## Contributing
