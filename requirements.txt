@@ -1,0 +1,5 @@
+img2vec_pytorch
+tqdm
+scikit-learn
+scipy
+numpy
