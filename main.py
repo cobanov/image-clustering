@@ -28,7 +28,6 @@ img2vec = Img2Vec(cuda=True)
 
 
 def main():
-
     # CLI Requirements
     parser = init_parser()
     opt = parser.parse_args()
@@ -49,7 +48,7 @@ def main():
     utils.create_dir(clusters_directory)
 
     # Get image datapaths
-    images = utils.read_images_from_directory(DIR_PATH)
+    images = utils.read_images_from_directory(DIR_PATH)[:2500]
 
     # Read with PIL
     pil_images = utils.read_with_pil(images)
@@ -64,6 +63,7 @@ def main():
         print("Img2Vec is running...")
 
         vec = img2vec.get_vec(pil_images, tensor=True)
+        print("Img2Vec process done.")
         utils.save_embeddings(vec, embedding_path)
 
     # Embeddings to PCA
@@ -81,7 +81,7 @@ def main():
         path_images = list(compress(images, label_mask))
         target_directory = f"./clusters/{project_name}/cluster_{label_number}"
         utils.create_dir(target_directory)
-        
+
         # Copy images into seperate directories
         for img_path in path_images:
             shutil.copy2(

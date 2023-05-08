@@ -24,7 +24,7 @@ def read_images_from_directory(image_directory: str) -> list:
     return list_of_images
 
 
-def read_with_pil(list_of_images: list, resize=False) -> list:
+def read_with_pil(list_of_images: list, resize=True) -> list:
     """
     > Reads a list of images and returns a list of PIL images
     :param list_of_images: list of image paths
@@ -32,25 +32,28 @@ def read_with_pil(list_of_images: list, resize=False) -> list:
     :param resize: If True, resize the image to 512x512, defaults to False (optional)
     :return: A list of PIL images
     """
-
+    print('Images are reading...')
     pil_images = list()
     for img_path in tqdm(list_of_images):
         img = Image.open(img_path).convert("RGB")
         if resize:  #! No hard code
             img.thumbnail((512, 512))
         pil_images.append(img)
+    print('Image reading done!')
 
     return pil_images
 
 
 def save_embeddings(tensor, path="embeddings.pt"):
     torch.save(tensor, path)
+    print(f'Embeddings are saved to {path}')
 
 
 def load_from_embeddings(embedding_path):
     """A brief description."""
 
     vec = torch.load(embedding_path)
+    print('Embeddings loaded from folder.')
     if vec.dim() > 2:
         vec = torch.squeeze(vec)
     return vec
