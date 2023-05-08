@@ -4,7 +4,7 @@ from PIL import Image
 import torch
 import matplotlib.pyplot as plt
 from pathlib import Path
-
+from tqdm import tqdm 
 
 def read_images_from_directory(image_directory: str) -> list:
     """
@@ -34,7 +34,7 @@ def read_with_pil(list_of_images: list, resize=False) -> list:
     """
 
     pil_images = list()
-    for img_path in list_of_images:
+    for img_path in tqdm(list_of_images):
         img = Image.open(img_path).convert("RGB")
         if resize:  #! No hard code
             img.thumbnail((512, 512))
