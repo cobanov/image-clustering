@@ -48,7 +48,7 @@ def main():
     utils.create_dir(clusters_directory)
 
     # Get image datapaths
-    images = utils.read_images_from_directory(DIR_PATH)[:2500]
+    images = utils.read_images_from_directory(DIR_PATH)
 
     # Read with PIL
     pil_images = utils.read_with_pil(images)
