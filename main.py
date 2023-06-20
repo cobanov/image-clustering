@@ -20,11 +20,9 @@ def init_parser(**parser_kwargs):
         "-c", "--cluster", help="How many cluster will be", default=30, type=int
     )
     parser.add_argument("-p", "--pca", help="PCA Dimensions", default=16, type=int)
+    parser.add_argument("--cpu", help="Run on CPU", action="store_true")
 
     return parser
-
-
-img2vec = Img2Vec(cuda=True)
 
 
 def main():
@@ -60,7 +58,12 @@ def main():
 
     else:
         # Get embeddings
-        print("Img2Vec is running...")
+        if opt.cpu:
+            print("Img2Vec is running on CPU...")
+            img2vec = Img2Vec(cuda=False)
+        else:
+            print("Img2Vec is running on CPU...")
+            img2vec = Img2Vec(cuda=True)
 
         vec = img2vec.get_vec(pil_images, tensor=True)
         print("Img2Vec process done.")
