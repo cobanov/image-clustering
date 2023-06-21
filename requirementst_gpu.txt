@@ -1,0 +1,10 @@
+--find-links https://download.pytorch.org/whl/torch_stable.html
+img2vec_pytorch
+tqdm
+scikit-learn
+scipy
+numpy
+matplotlib
+torch==2.0.0+cu117
+torchvision==0.15.1+cu117
+torchaudio==2.0.1

@@ -2,15 +2,17 @@
 
 ## Installation
 
+For CPU Installation
+
 ```bash
 pip install -r requirements.txt
 ```
 
-- torch
-- img2vec
-- numpy
-- scikit-learn
-- matplotlib
+For GPU installlation
+
+```bash
+pip install -r requirements_gpu.txt
+```
 
 ## Demo
 
@@ -26,9 +28,10 @@ Image caption CLI
 
 optional arguments:
   -h, --help                        show this help message and exit
-  -i INPUT, --input INPUT           Input directoryt path, such as ./images
+  -i INPUT, --input INPUT           Input directory path, such as ./images
   -c CLUSTER, --cluster CLUSTER     How many cluster will be
   -p PCA, --pca PCA                 PCA Dimensions
+  --cpu                             Run on CPU
 ```
 
 ### Example
