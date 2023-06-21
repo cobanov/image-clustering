@@ -78,7 +78,7 @@ def create_image_grid(label_images, project_name, label_number):
         plt.imshow(image, cmap="gray", interpolation="none")
         plt.title(f"Class: {label_number}")
         plt.axis("off")
-        plt.savefig(f"./clusters/{project_name}/cluster_{label_number}.png")
+        plt.savefig(f"./clusters/{project_name}/cluster_{label_number}.png", dpi=300)
 
 
 def create_dir(directory_path):
