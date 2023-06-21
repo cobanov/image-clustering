@@ -1,82 +1,82 @@
-from img2vec_pytorch import Img2Vec
-from itertools import compress
-import shutil
 import os
-from tqdm import tqdm
 import argparse
+import shutil
+from itertools import compress
+
+import torch
+from img2vec_pytorch import Img2Vec
+from tqdm import tqdm
 
 import clustering
 import utils
 
 
-def init_parser(**parser_kwargs):
+def init_parser():
     """
-    This function initializes the parser and adds arguments to it
-    :return: The parser object is being returned.
+    Initializes the argument parser and adds arguments to it.
+    :return: The parser object.
     """
-    parser = argparse.ArgumentParser(description="Image caption CLI")
-    parser.add_argument("-i", "--input", help="Input directoryt path, such as ./images")
+    parser = argparse.ArgumentParser(description="Image clustering CLI")
+    parser.add_argument("-i", "--input", help="Input directory path, e.g., ./images")
     parser.add_argument(
-        "-c", "--cluster", help="How many cluster will be", default=30, type=int
+        "-c", "--cluster", help="Number of clusters", default=30, type=int
     )
-    parser.add_argument("-p", "--pca", help="PCA Dimensions", default=16, type=int)
+    parser.add_argument("-p", "--pca", help="PCA dimensions", default=16, type=int)
     parser.add_argument("--cpu", help="Run on CPU", action="store_true")
-
     return parser
 
 
 def main():
-    # CLI Requirements
+    # Parse command-line arguments
     parser = init_parser()
-    opt = parser.parse_args()
+    args = parser.parse_args()
 
-    CLUSTER_RANGE = opt.cluster
-    PCA_DIM = opt.pca
-    DIR_PATH = opt.input
+    cluster_range = args.cluster
+    pca_dim = args.pca
+    dir_path = args.input
 
-    project_name = f"{os.path.split(DIR_PATH)[-1]}"
+    project_name = os.path.split(dir_path)[-1]
     embedding_path = f"embeddings/{project_name}.pt"
     clusters_directory = f"clusters/{project_name}"
 
     # Create required directories
     required_dirs = ["embeddings", "clusters"]
-    for dir in required_dirs:
-        utils.create_dir(dir)
+    for directory in required_dirs:
+        utils.create_dir(directory)
 
     utils.create_dir(clusters_directory)
 
-    # Get image datapaths
-    images = utils.read_images_from_directory(DIR_PATH)
+    # Get image file paths
+    images = utils.read_images_from_directory(dir_path)
 
-    # Read with PIL
+    # Read images with PIL
     pil_images = utils.read_with_pil(images)
 
     # Embeddings
     if os.path.exists(embedding_path):
-        print("Embeddings already exists, loading from embeddings folder.")
-        vec = utils.load_from_embeddings(embedding_path)
-
+        print("Embeddings already exist, loading from embeddings folder.")
+        embeddings = utils.load_from_embeddings(embedding_path)
     else:
         # Get embeddings
-        if opt.cpu:
+        if args.cpu:
             print("Img2Vec is running on CPU...")
             img2vec = Img2Vec(cuda=False)
         else:
-            print("Img2Vec is running on CPU...")
+            print("Img2Vec is running on GPU...")
             img2vec = Img2Vec(cuda=True)
 
-        vec = img2vec.get_vec(pil_images, tensor=True)
+        embeddings = img2vec.get_vec(pil_images, tensor=True)
         print("Img2Vec process done.")
-        utils.save_embeddings(vec, embedding_path)
+        utils.save_embeddings(embeddings, embedding_path)
 
     # Embeddings to PCA
-    pca_embeddings = clustering.calculate_pca(embeddings=vec, dim=PCA_DIM)
+    pca_embeddings = clustering.calculate_pca(embeddings, dim=pca_dim)
 
-    # PCA to kmeans
-    centroid, labels = clustering.calculate_kmeans(pca_embeddings, k=CLUSTER_RANGE)
+    # PCA to k-means
+    centroids, labels = clustering.calculate_kmeans(pca_embeddings, k=cluster_range)
 
     # Save random sample clusters
-    for label_number in tqdm(range(CLUSTER_RANGE)):
+    for label_number in tqdm(range(cluster_range)):
         label_mask = labels == label_number
         label_images = list(compress(pil_images, label_mask))
         utils.create_image_grid(label_images, project_name, label_number)
@@ -85,12 +85,9 @@ def main():
         target_directory = f"./clusters/{project_name}/cluster_{label_number}"
         utils.create_dir(target_directory)
 
-        # Copy images into seperate directories
+        # Copy images into separate directories
         for img_path in path_images:
-            shutil.copy2(
-                img_path,
-                target_directory,
-            )
+            shutil.copy2(img_path, target_directory)
 
 
 if __name__ == "__main__":

@@ -14,7 +14,7 @@ def read_images_from_directory(image_directory: str) -> list:
     :return: A list of image paths.
     """
     list_of_images = []
-    image_extensions = (".gif", ".png", ".jpg", ".jpeg")
+    image_extensions = ("*.gif", "*.png", "*.jpg", "*.jpeg")
     for ext in image_extensions:
         list_of_images.extend(glob.glob(os.path.join(image_directory, ext)))
     print(f"Images found: {len(list_of_images)}")
@@ -69,16 +69,16 @@ def create_image_grid(label_images, project_name, label_number):
     :param project_name: The name of the project.
     :param label_number: The label number.
     """
-    fig, axs = plt.subplots(3, 3)
-    for i, ax in enumerate(axs.flat):
+
+    for i in range(len(label_images)):
         if i >= 9:
             break
-    image = label_images[i]
-    ax.imshow(image, cmap="gray", interpolation="none")
-    ax.set_title(f"Class: {label_number}")
-    ax.axis("off")
-    plt.savefig(f"./clusters/{project_name}/cluster_{label_number}.png")
-    plt.close(fig)
+        image = label_images[i]
+        plt.subplot(3, 3, i + 1)
+        plt.imshow(image, cmap="gray", interpolation="none")
+        plt.title(f"Class: {label_number}")
+        plt.axis("off")
+        plt.savefig(f"./clusters/{project_name}/cluster_{label_number}.png")
 
 
 def create_dir(directory_path):
