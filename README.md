@@ -36,8 +36,16 @@ optional arguments:
 
 ### Example
 
+For CPU
+
 ```bash
-python main.py -i "D:\New folder\random_1500" -c 50 -p 16 
+python main.py -i "D:\New folder\random_1500" -c 5 -p 16 --cpu
+```
+
+For GPU
+
+```bash
+python main.py -i "D:\New folder\random_1500" -c 5 -p 16
 ```
 
 ## Contributing
